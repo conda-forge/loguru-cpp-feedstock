@@ -25,7 +25,6 @@ build:
             -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
             -DBUILD_SHARED_LIBS=ON ^
             -DLOGURU_WITH_STREAMS=ON ^
-            -DCMAKE_CXX_FLAGS="-Wno-type-limits" ^
             %SRC_DIR%
         ninja install
       else: |
