@@ -22,6 +22,7 @@ build:
     - if: win
       then: |
         cmake -GNinja ^
+            -DCMAKE_BUILD_TYPE=Release ^
             -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
             -DBUILD_SHARED_LIBS=ON ^
             -DLOGURU_WITH_STREAMS=ON ^
@@ -29,6 +30,7 @@ build:
         ninja install
       else: |
         cmake -GNinja \
+              -DCMAKE_BUILD_TYPE=Release \
               -DCMAKE_INSTALL_PREFIX=$PREFIX \
               -DBUILD_SHARED_LIBS=ON \
               -DLOGURU_WITH_STREAMS=ON \
@@ -56,7 +58,7 @@ tests:
         - "*/loguru-config-version.cmake"
         - "*/loguru-config.cmake"
         - "*/loguru-targets.cmake"
-        - ${{ "Library/bin/logurud.dll" if win }}
+        - ${{ "Library/bin/loguru.dll" if win }}
 
 about:
   summary: A lightweight C++ logging library
