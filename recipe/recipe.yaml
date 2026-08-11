@@ -26,6 +26,7 @@ build:
             -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
             -DBUILD_SHARED_LIBS=ON ^
             -DLOGURU_WITH_STREAMS=ON ^
+            -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=ON ^
             %SRC_DIR%
         ninja install
       else: |
@@ -52,13 +53,12 @@ tests:
       include:
         - loguru/loguru.hpp
       lib:
-        - ${{ "loguru" if unix }}
+        - loguru
       files:
         - "*/loguru.pc"
         - "*/loguru-config-version.cmake"
         - "*/loguru-config.cmake"
         - "*/loguru-targets.cmake"
-        - ${{ "Library/bin/loguru.dll" if win }}
 
 about:
   summary: A lightweight C++ logging library
