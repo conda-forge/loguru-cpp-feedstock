@@ -3,8 +3,8 @@ context:
   # The upstream repo is not very active anymore and contain commits since the last release
   # from 09/2019. A proper git tag has been asked at https://github.com/emilk/loguru/issues/253.
   # In the meantime, we use the last version with the commit hash and date as the version string.
-  git_hash_date: "20230406"
-  git_hash: 4adaa18
+  git_hash_date: "20260731"
+  git_hash: f9a628b67bf960bbeb6eddd1227a3e6f4d631f1c
   version: ${{ "2.1.0.post" + git_hash_date + "." + git_hash }}
 
 package:
@@ -13,22 +13,25 @@ package:
 
 source:
   # See https://github.com/emilk/loguru/issues/253
-  url: https://github.com/emilk/loguru/archive/${{ git_hash }}.zip
-  sha256: da272cae7a177217a02fbb2622bd0ce80f3b0b6a4ffb71579c186d80ecf81f2e
+  url: https://github.com/emilk/loguru/archive/${{ git_hash }}.tar.gz
+  sha256: 11965f3417b9f70a5e42c6cd6ab5d9e0b63a812a38b9a3ec42b5b5a52a14fae2
 
 build:
-  number: 1
+  number: 0
   script:
     - if: win
       then: |
         cmake -GNinja ^
+            -DCMAKE_BUILD_TYPE=Release ^
             -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
             -DBUILD_SHARED_LIBS=ON ^
             -DLOGURU_WITH_STREAMS=ON ^
+            -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=ON ^
             %SRC_DIR%
         ninja install
       else: |
         cmake -GNinja \
+              -DCMAKE_BUILD_TYPE=Release \
               -DCMAKE_INSTALL_PREFIX=$PREFIX \
               -DBUILD_SHARED_LIBS=ON \
               -DLOGURU_WITH_STREAMS=ON \
@@ -50,13 +53,12 @@ tests:
       include:
         - loguru/loguru.hpp
       lib:
-        - ${{ "loguru" if unix }}
+        - loguru
       files:
         - "*/loguru.pc"
         - "*/loguru-config-version.cmake"
         - "*/loguru-config.cmake"
         - "*/loguru-targets.cmake"
-        - ${{ "Library/bin/logurud.dll" if win }}
 
 about:
   summary: A lightweight C++ logging library
@@ -67,3 +69,4 @@ about:
 extra:
   recipe-maintainers:
     - hadim
+    - mgorny
